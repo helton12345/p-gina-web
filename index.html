@@ -3,274 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Precisa Agrimensura – Geo Visualizador de Lotes</title>
-    <meta name="description" content="Dê aos seus corretores um mapa interativo no celular. Sincronizado com o seu escritório em tempo real, com atualização de status ao vivo e GPS integrado.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --green: #1a7f4b;
-            --green-dark: #145f38;
-            --green-light: #e8f5ee;
-            --text: #1a1a2e;
-            --muted: #555f6e;
-            --bg: #f9fafb;
-            --white: #ffffff;
-            --radius: 12px;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            background: var(--bg);
-            line-height: 1.6;
-        }
-
-        a { text-decoration: none; color: inherit; }
-
-        /* ── NAV ── */
-        nav {
-            background: var(--white);
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--green);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .logo i { font-size: 1.4rem; }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--green);
-            color: var(--white);
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.2s;
-        }
-        .btn:hover { background: var(--green-dark); }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--green);
-            color: var(--green);
-        }
-        .btn-outline:hover { background: var(--green); color: var(--white); }
-
-        /* ── HERO ── */
-        .hero {
-            background: linear-gradient(135deg, #0d4f2e 0%, #1a7f4b 60%, #22a85f 100%);
-            color: var(--white);
-            text-align: center;
-            padding: 100px 24px 120px;
-        }
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 800;
-            line-height: 1.2;
-            max-width: 780px;
-            margin: 0 auto 24px;
-        }
-        .hero p {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            max-width: 640px;
-            margin: 0 auto 40px;
-            opacity: 0.9;
-        }
-        .hero .btn {
-            background: var(--white);
-            color: var(--green-dark);
-            font-size: 1.05rem;
-            padding: 14px 32px;
-            border-radius: 10px;
-            font-weight: 700;
-        }
-        .hero .btn:hover { background: #e8f5ee; }
-
-        /* ── FEATURES ── */
-        .features {
-            max-width: 1100px;
-            margin: -60px auto 80px;
-            padding: 0 24px;
-        }
-        .features-header {
-            text-align: center;
-            background: var(--white);
-            border-radius: var(--radius) var(--radius) 0 0;
-            padding: 48px 24px 32px;
-            border: 1px solid #e5e7eb;
-            border-bottom: none;
-        }
-        .features-header h2 {
-            font-size: clamp(1.4rem, 3vw, 2rem);
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        .features-header p { color: var(--muted); font-size: 1.05rem; }
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            background: var(--white);
-            border: 1px solid #e5e7eb;
-            border-top: none;
-            border-radius: 0 0 var(--radius) var(--radius);
-            overflow: hidden;
-        }
-        .card {
-            padding: 36px 32px;
-            border-right: 1px solid #e5e7eb;
-        }
-        .card:last-child { border-right: none; }
-        .card-icon {
-            width: 52px;
-            height: 52px;
-            background: var(--green-light);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .card-icon i { font-size: 1.4rem; color: var(--green); }
-        .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
-        .card p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
-
-        /* ── CTA ── */
-        .cta {
-            background: var(--white);
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 80px 24px;
-            text-align: center;
-        }
-        .cta h2 {
-            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-            font-weight: 800;
-            margin-bottom: 16px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .cta > p {
-            color: var(--muted);
-            font-size: 1.05rem;
-            max-width: 580px;
-            margin: 0 auto 36px;
-        }
-        .cta-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
-        .btn-whatsapp {
-            background: #25d366;
-            font-size: 1.05rem;
-            padding: 14px 32px;
-        }
-        .btn-whatsapp:hover { background: #1ebe5c; }
-        .cta-sub { margin-top: 20px; color: var(--muted); font-size: 0.9rem; }
-
-        /* ── FOOTER ── */
-        footer {
-            background: #0d1117;
-            color: #8b949e;
-            text-align: center;
-            padding: 32px 24px;
-            font-size: 0.88rem;
-            line-height: 1.8;
-        }
-        footer strong { color: #e6edf3; }
-
-        @media (max-width: 640px) {
-            .card { border-right: none; border-bottom: 1px solid #e5e7eb; }
-            .card:last-child { border-bottom: none; }
-        }
-    </style>
+    <title>Geo Visualizador | Gestão de Loteamentos em Tempo Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-<!-- NAV -->
-<nav>
-    <div class="nav-inner">
-        <div class="logo">
-            <i class="fa-solid fa-map-location-dot"></i>
-            Precisa Agrimensura
+    <!-- Navegação -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <!-- Logo Oficial com WhatsApp -->
+                    <img src="IMG-20260822-WA0014.jpg" alt="Logo Precisa Agrimensura" class="h-14 w-auto mr-4 object-contain">
+                    <span class="font-bold text-2xl text-blue-900 hidden sm:block">Precisa <span class="text-blue-600">Agrimensura</span></span>
+                </div>
+                <div>
+                    <a href="#contato" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                        Agendar Demonstração
+                    </a>
+                </div>
+            </div>
         </div>
-        <a href="#contato" class="btn">Agendar Demonstração</a>
-    </div>
-</nav>
+    </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <h1>O Fim da Planilha de Vendas Desatualizada.</h1>
-    <p>Dê aos seus corretores um mapa interativo no celular. Sincronizado com o seu escritório em tempo real, com atualização de status ao vivo e GPS integrado.</p>
-    <a href="#contato" class="btn">
-        <i class="fa-solid fa-play"></i>
-        Quero Ver o Sistema Funcionando
-    </a>
-</section>
+    <!-- Hero Section (Dobra Principal com Vídeo) -->
+    <div class="pt-32 pb-16 bg-gradient-to-br from-blue-900 to-blue-700 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
+                O Fim da Planilha de Vendas Desatualizada.
+            </h1>
+            <p class="mt-4 text-xl text-blue-100 max-w-3xl mx-auto mb-10">
+                Dê aos seus corretores um mapa interativo no celular. Sincronizado com o seu escritório em tempo real, com atualização de status ao vivo e GPS integrado[span_0](start_span)[span_0](end_span).
+            </p>
+            
+            <a href="#contato" class="inline-block bg-white text-blue-700 font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-gray-50 hover:scale-105 transition-all mb-12">
+                Quero Ver o Sistema Funcionando
+            </a>
 
-<!-- FEATURES -->
-<section class="features">
-    <div class="features-header">
-        <h2>Gestão de Nível Corporativo no Bolso do Corretor</h2>
-        <p>Elimine a fricção entre o campo e o administrativo.</p>
-    </div>
-    <div class="cards">
-        <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
-            <h3>GPS em Tempo Real</h3>
-            <p>O corretor navega pelo loteamento usando o GPS do próprio smartphone. O sistema identifica a posição exata e exibe os lotes e quadras com popups contendo a área e as 4 dimensões laterais da testada.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-rotate"></i></div>
-            <h3>Sincronização ao Vivo</h3>
-            <p>Integrado ao Google Sheets. Se o administrativo marcar um lote como "Vendido", o mapa do corretor atualiza a cor automaticamente em 10 segundos, sem precisar recarregar a página.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <h3>Segurança Administrativa</h3>
-            <p>O público e os corretores acessam apenas informações de status e valor de balcão. Dados sensíveis como forma de pagamento e adimplência ficam blindados no painel interno do escritório.</p>
+            <!-- Vídeo Promocional Oficial -->
+            <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 relative bg-slate-900 aspect-video">
+                <video src="VID-20260822-WA0017(2).mp4" autoplay loop muted playsinline class="w-full h-full object-cover opacity-95"></video>
+            </div>
         </div>
     </div>
-</section>
 
-<!-- CTA -->
-<section class="cta" id="contato">
-    <h2>Profissionalize a operação do seu loteamento hoje.</h2>
-    <p>Sem instalação de aplicativos complexos. Nossa equipe configura o ambiente em nuvem, mapeia a topologia do seu empreendimento e entrega o sistema rodando direto no navegador dos seus corretores.</p>
-    <div class="cta-buttons">
-        <a href="https://wa.me/5532984341820?text=Olá!%20Gostaria%20de%20agendar%20uma%20demonstração%20do%20Geo%20Visualizador." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-            <i class="fa-brands fa-whatsapp"></i>
-            Falar com um Consultor
-        </a>
+    <!-- Seção de Ecossistema e Benefícios -->
+    <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">Gestão de Nível Corporativo no Bolso do Corretor</h2>
+                <p class="mt-4 text-lg text-slate-600">Elimine a fricção entre o campo e o administrativo com nosso ecossistema integrado.</p>
+            </div>
+
+            <!-- Imagem Oficial "O Controle em 3 Níveis" -->
+            <div class="max-w-4xl mx-auto mb-20 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+                <img src="1787449753187.png" alt="O Controle em 3 Níveis do Geo Visualizador" class="w-full h-auto object-cover">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Funcionalidade 1 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">GPS em Tempo Real</h3>
+                    <p class="text-slate-600">
+                        O corretor navega pelo loteamento usando o GPS do próprio smartphone. O sistema identifica a posição exata e exibe os lotes e quadras com as dimensões detalhadas[span_1](start_span)[span_1](end_span).
+                    </p>
+                </div>
+
+                <!-- Funcionalidade 2 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-rotate"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Sincronização ao Vivo</h3>
+                    <p class="text-slate-600">
+                        Integrado ao seu escritório. Se o administrativo marcar um lote como "Vendido", o mapa do corretor atualiza a cor automaticamente via Google Sheets[span_2](start_span)[span_2](end_span).
+                    </p>
+                </div>
+
+                <!-- Funcionalidade 3 -->
+                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Segurança Administrativa</h3>
+                    <p class="text-slate-600">
+                        O público e os corretores acessam apenas informações de status e valor de balcão[span_3](start_span)[span_3](end_span). Dados financeiros sensíveis ficam blindados exclusivamente no painel interno do escritório[span_4](start_span)[span_4](end_span).
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <p class="cta-sub">Atendimento direto com a engenharia da Precisa Agrimensura.</p>
-</section>
 
-<!-- FOOTER -->
-<footer>
-    <p>
-        <strong>© 2026 Precisa Agrimensura LTDA.</strong><br>
-        CNPJ: 43.503.235/0001-09 &nbsp;|&nbsp; 📲 +55 32 98434-1820 &nbsp;|&nbsp; ✉️ precisagrimensuratop@gmail.com<br>
-        Todos os direitos reservados.
-    </p>
-</footer>
+    <!-- CTA Final / Contato -->
+    <div id="contato" class="bg-slate-900 py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">Profissionalize a operação do seu loteamento hoje.</h2>
+            <p class="text-lg text-slate-300 mb-10">
+                Sem instalação de aplicativos complexos. Nossa equipe mapeia a topologia do seu empreendimento e entrega o sistema rodando direto no navegador dos seus corretores.
+            </p>
+            
+            <a href="https://wa.me/5532984341820?text=Olá!%20Gostaria%20de%20agendar%20uma%20demonstração%20do%20Geo%20Visualizador." target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-green-600 transition-colors">
+                <i class="fa-brands fa-whatsapp text-2xl mr-3"></i> Falar com um Consultor
+            </a>
+            
+            <p class="mt-6 text-sm text-slate-400">Atendimento direto com a engenharia da Precisa Agrimensura.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-10 border-t border-slate-800 text-center text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-4">
+            <img src="IMG-20260822-WA0014.jpg" alt="Logo Precisa Agrimensura" class="h-10 w-auto opacity-60 grayscale hover:grayscale-0 transition-all">
+            <p class="leading-relaxed">
+                <strong>© 2026 Precisa Agrimensura LTDA.</strong><br>
+                CNPJ: 43.503.235/0001-09 &nbsp;|&nbsp; 📲 +55 32 98434-1820 &nbsp;|&nbsp; ✉️ precisagrimensuratop@gmail.com<br>
+                Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
 
 </body>
 </html>
